@@ -1,0 +1,32 @@
+input {
+        kafka {
+                 zk_connect => "52.53.180.39:2181"
+                 topic_id => "sensorTemp"
+                 consumer_threads => 1
+                 codec => "json"
+  }
+kafka {
+                 zk_connect => "52.53.180.39:2181"
+                 topic_id => "sensorHumidity"
+                 consumer_threads => 1
+                 codec => "json"
+  }
+}
+
+filter{
+        json{
+        source => "message"
+        target => "temp"
+}
+
+}
+
+output {
+
+        elasticsearch{
+                        hosts => ["52.26.17.88:9200"]
+       }
+        stdout{
+        codec => json
+        }
+ }
